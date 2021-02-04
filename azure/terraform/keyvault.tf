@@ -45,3 +45,10 @@ resource "azurerm_key_vault" "testvault" {
     environment = "Terraform Demo"
   }
 }
+
+resource "azurerm_key_vault_secret" "secrets_for_linux_nodes" {
+    for_each = var.linux_nodes
+    name = "${each.key}-admin"
+    value = each.value.pass
+    key_vault_id = azurerm_key_vault.testvault.id
+}

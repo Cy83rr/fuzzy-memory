@@ -20,11 +20,11 @@ variable "linux_nodes" {
         nic = ""
         pass = ""
     }
-    "testlinux2" = {
+/*    "testlinux2" = {
         #name = "testlinux2"
         size = "Standard_B2ms"
         nic = ""
         pass = ""
-    }
+    }*/
   }
 }

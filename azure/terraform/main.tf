@@ -1,11 +1,11 @@
-/*terraform {
+terraform {
   backend "azurerm" {
     resource_group_name   = "tstate"
-    storage_account_name  = "tstate09762"
+    storage_account_name  = "tstate809"
     container_name        = "tstate"
     key                   = "terraform.tfstate"
   }
-}*/
+}
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
@@ -44,29 +44,11 @@ output "merged_linux" {
 }
 
 locals {
-    #windows_passes =
-
-/*    windows_vms = {
-      for key,value in var.windows_nodes:
-        key => "${merge(value, {pass= local.windows_passes[key]})}"
-        #value["pass"] = windows_passes[key]
-        #key => merge(value, { "pass" = lookup(zipmap(keys(var.windows_nodes), random_password.admin_pass_windows), key, "") })
-
-    }*/
     linux_vms = {
       for key,value in var.linux_nodes:
         key => merge(value, {"pass" = local.linux_passes[key].result })
     }
 }
-
-
-resource "azurerm_key_vault_secret" "secrets_for_linux_nodes" {
-    for_each = var.linux_nodes
-    name = "${each.key}-admin"
-    value = each.value.pass
-    key_vault_id = azurerm_key_vault.testvault.id
-}
-
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "linuxVM" {
